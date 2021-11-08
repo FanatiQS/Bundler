@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<input type="text">
+		<button>button</button>
+		<br>
+		<textarea></textarea>
+		<script type="module">
+			import { Bundler } from "./src/Bundler.js";
+
+			document.querySelector("button").onclick = function () {
+				let path = document.querySelector("input").value;
+
+				// Gets filename from path
+				const fileIndex = path.lastIndexOf('/') + 1;
+				if (!fileIndex) throw new Error("Unable to get filename from path: " + path);
+				const fileName = path.slice(fileIndex) || "index.html";
+
+				// Gets filetype by extension of file
+				const typeIndex = fileName.lastIndexOf('.') + 1;
+				if (!typeIndex) throw new Error("Unable to get filetype from file: " + fileName);
+				const fileType = fileName.slice(typeIndex)
+
+				// Trims filename from path
+				path = path.slice(0, fileIndex);
+
+				// Parses the content of the file and outputs it to the textarea
+				const parser = new Bundler((src) => fetch(src).then((res) => res.text()));
+				return parser.parse(path, fileName, fileType).then((content) => {
+					document.querySelector("textarea").textContent = content;
+				});
+			}
+		</script>
+	</body>
+</html>
