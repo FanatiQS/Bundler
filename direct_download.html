@@ -30,7 +30,7 @@
 				const parser = new Bundler((src) => fetch(src).then((res) => res.text()));
 				parser.parse(src, fileName, fileType).then((content) => {
 					const saveHandler = document.querySelector('#download');
-					saveHandler.setAttribute('download', `${fileName}.${fileType}`);
+					saveHandler.setAttribute('download', fileName);
 					saveHandler.setAttribute('href', `data:text/html,${encodeURIComponent(content)}`);
 					saveHandler.disabled = false;
 				});
