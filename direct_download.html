@@ -5,7 +5,7 @@
 		<title></title>
 	</head>
 	<body>
-		<a id="download"></a>
+		<a id="download" disabled>Download</a>
 		<script type="module">
 			import { Bundler } from "./src/bundler.js";
 
@@ -28,11 +28,11 @@
 
 				// Parses the content of the file and outputs it to the textarea
 				const parser = new Bundler((src) => fetch(src).then((res) => res.text()));
-				return parser.parse(src, fileName, fileType).then((content) => {
+				parser.parse(src, fileName, fileType).then((content) => {
 					const saveHandler = document.querySelector('#download');
 					saveHandler.setAttribute('download', `${fileName}.${fileType}`);
 					saveHandler.setAttribute('href', `data:text/html,${encodeURIComponent(content)}`);
-					saveHandler.click();
+					saveHandler.disabled = false;
 				});
 			}
 			catch (err) {
